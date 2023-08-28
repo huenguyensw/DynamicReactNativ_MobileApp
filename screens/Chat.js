@@ -87,7 +87,7 @@ export default function Chat() {
                     />
                     )}
                     keyExtractor={item => item._id}
-                    initialScrollIndex={allMessages.length-10} // Scroll to the first item
+                    initialScrollIndex={(allMessages.length<=10)?0:(allMessages.length-10)} // Scroll to the first item
                     initialNumToRender={10} // Number of items to render initially
                 />}
 
