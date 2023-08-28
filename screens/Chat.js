@@ -11,17 +11,8 @@ export default function Chat() {
     const fetchAllMessagesAPI = 'https://chat-api-with-auth.up.railway.app/messages';
     const headers = { "Authorization": "Bearer " + accessToken.accessToken };
     const [newMessage, setNewMessage] = useState('');
+    const [addingState, setAddingState] = useState(false);
 
-    const flatListRef = useRef(null);
-
-    useEffect(() => {
-        if (flatListRef.current) {
-            // Scroll to the end of the list after a short delay to allow rendering
-            setTimeout(() => {
-                flatListRef.current.scrollToEnd({ animated: true });
-            }, 100);
-        }
-    }, []);
 
 
     const getData = () => {
@@ -42,7 +33,7 @@ export default function Chat() {
     }
     useEffect(() => {
         getData();
-    }, [fetchAllMessagesAPI]);
+    }, [addingState]);
 
 
     const handleSendMessage = async () => {
@@ -62,7 +53,7 @@ export default function Chat() {
             const result = await response.json();
             console.log('resk', result)
             if (result.status == '201') {
-                getData();
+                setAddingState(!addingState);
             };
         }
         catch (error) {
@@ -70,15 +61,15 @@ export default function Chat() {
         }
     }
 
-    console.log('allmessage: ', allMessages)
+    // console.log('allmessage: ', allMessages)
 
     return (
         <SafeAreaView style={styles.container} >
             {allMessages
                 && <FlatList
                     style={styles.messageBox}
-                    ref={flatListRef}
-                    data={allMessages}
+                    data={allMessages.reverse()}
+                    inverted
                     renderItem={({ item }) =>
                     (< Message
                         item = {item}
@@ -87,8 +78,6 @@ export default function Chat() {
                     />
                     )}
                     keyExtractor={item => item._id}
-                    initialScrollIndex={(allMessages.length<=10)?0:(allMessages.length-10)} // Scroll to the first item
-                    initialNumToRender={10} // Number of items to render initially
                 />}
 
             {/* the second solution */}

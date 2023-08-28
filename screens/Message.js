@@ -21,7 +21,10 @@ export default function Message({message, userID}) {
 
 const styles = StyleSheet.create({
     container: {
+        flex:1,
+        flexWrap: 'nowrap',
         backgroundColor: 'white',
+        flexDirection: 'column',
         padding: 5,
     },
     myContent: {
