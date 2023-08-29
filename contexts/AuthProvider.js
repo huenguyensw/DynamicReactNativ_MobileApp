@@ -36,7 +36,7 @@ export default function AuthProvider({children}) {
         await AsyncStorage.setItem('MyApp_user',JSON.stringify(userInfo));
         console.log('successfully',userInfo);
         setAccessToken(userInfo);
-        navigation.navigate("Chat");
+        navigation.navigate("Chat page");
         
       }
       

@@ -1,9 +1,10 @@
-
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { AuthContext } from '../contexts/AuthProvider'
 import { Feather } from '@expo/vector-icons';
 import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, FlatList } from 'react-native'
 import Message from './Message';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+
 
 export default function Chat() {
     const { accessToken } = useContext(AuthContext);
@@ -12,6 +13,8 @@ export default function Chat() {
     const headers = { "Authorization": "Bearer " + accessToken.accessToken };
     const [newMessage, setNewMessage] = useState('');
     const [addingState, setAddingState] = useState(false);
+    const [enableDeleteMessage, setEnableDeleteMessage] = useState(false);
+    const [itemId, setItemId] = useState(null);
 
 
 
@@ -25,7 +28,7 @@ export default function Chat() {
 
             })
             .then((resText) => {
-                setAllMessages(JSON.parse(resText).data);
+                setAllMessages(JSON.parse(resText).data.reverse());
             })
             .catch((error) => {
                 console.log(error);
@@ -37,7 +40,6 @@ export default function Chat() {
 
 
     const handleSendMessage = async () => {
-        console.log('newMessage', newMessage)
         try {
             const response = await fetch(fetchAllMessagesAPI, {
                 method: 'POST',
@@ -51,7 +53,6 @@ export default function Chat() {
             })
 
             const result = await response.json();
-            console.log('resk', result)
             if (result.status == '201') {
                 setAddingState(!addingState);
             };
@@ -61,25 +62,81 @@ export default function Chat() {
         }
     }
 
-    // console.log('allmessage: ', allMessages)
+    const deleteContent = async(id) => {
+        console.log('id', id)
+        try{
+            const response = await fetch(fetchAllMessagesAPI + '/'+ `${id}`,{
+                method: 'DELETE',
+                headers: {
+                    "Authorization": "Bearer " + accessToken.accessToken,
+                }
+            })
+            const result = await response.json();
+            if(result.status == '200'){
+                setAllMessages(allMessages.filter((item) => item._id != id))
+            }
+            setEnableDeleteMessage(false);
+
+        }catch(error){
+            console.log(error);
+        }
+        
+    }
+
+    const CancelDeletion = () => {
+        setEnableDeleteMessage(false);
+    }
+
+
 
     return (
         <SafeAreaView style={styles.container} >
             {allMessages
                 && <FlatList
                     style={styles.messageBox}
-                    data={allMessages.reverse()}
+                    data={allMessages}
                     inverted
                     renderItem={({ item }) =>
                     (< Message
-                        item = {item}
+                        item={item}
                         message={item}
                         userID={accessToken.userID}
+                        setEnableDeleteMessage={setEnableDeleteMessage}
+                        setItemId = {setItemId}
                     />
                     )}
                     keyExtractor={item => item._id}
                 />}
-
+            {enableDeleteMessage
+            ? <View style={styles.deleteBox}>
+                    <MaterialIcons
+                        name="delete"
+                        size={24}
+                        color="#F5F5DC"
+                        onPress={() => deleteContent(itemId)} />
+                    <Ionicons
+                        name="close"
+                        size={24}
+                        color="#F5F5DC"
+                        onPress={() => CancelDeletion()} />
+            </View>
+            : <View style={styles.newMessageBox}>
+                    <TextInput
+                        style={styles.inputField}
+                        placeholder='Message...'
+                        value={newMessage}
+                        onChangeText={(text) => setNewMessage(text)}
+                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            handleSendMessage();
+                            Keyboard.dismiss();
+                        }}
+                    >
+                        <Feather name="send" size={24} color="black" />
+                    </TouchableOpacity>
+            </View>
+            }
             {/* the second solution */}
             {/* {allMessages && allMessages.map((message) =>
 
@@ -89,22 +146,7 @@ export default function Chat() {
                 //     userID={accessToken.userID}
                 // />
             )} */}
-            <View style={styles.newMessageBox}>
-                <TextInput
-                    style={styles.inputField}
-                    placeholder='Message...'
-                    value={newMessage}
-                    onChangeText={(text) => setNewMessage(text)}
-                />
-                <TouchableOpacity 
-                    onPress={() => {
-                        handleSendMessage();
-                        Keyboard.dismiss();
-                    }}
-                >
-                    <Feather name="send" size={24} color="black" />
-                </TouchableOpacity>
-            </View>
+
 
         </SafeAreaView>
     )
@@ -136,5 +178,17 @@ const styles = StyleSheet.create({
     },
     messageBox: {
         marginBottom: 20,
+    },
+    deleteBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderWidth: 2,
+        padding: 5,
+        backgroundColor: '#1E90FF',
+        marginBottom: 15,
+        borderRadius: 5,
+        borderColor: '#1E90FF'
+
     }
+
 })

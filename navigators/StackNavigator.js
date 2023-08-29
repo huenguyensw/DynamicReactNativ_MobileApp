@@ -12,7 +12,7 @@ export default function StackNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Chat" component={DrawerNavigator} options={{headerShown: false}} />
+      <Stack.Screen name="Chat page" component={DrawerNavigator} options={{headerShown: false}} />
       {/* <Stack.Screen name="Chat" component={Chat} /> */}
     </Stack.Navigator>
   )
