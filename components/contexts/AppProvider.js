@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-export const AuthContext = createContext();
+export const AppContext = createContext();
 
-export default function AuthProvider({children}) {
+export default function AppProvider({children}) {
   const [loginMessage, setLoginMessage] = useState('');
   const [accessToken, setAccessToken] = useState({});
   const APIGenToken = 'https://chat-api-with-auth.up.railway.app/auth/token';
   const navigation = useNavigation();
+  const [profileImage, setProfileImage] = useState(null);
 
   const handleLogin = async(username,password,setUserName, setPassword) =>{
     try{
@@ -27,12 +28,13 @@ export default function AuthProvider({children}) {
       if(result.status == '401'){
         setLoginMessage('Incorrect username or password');
       }else if(result.status == '200'){
-
+        
+        // clear content of input fields as well as login message
         setLoginMessage('');
         setUserName('');
         setPassword('');
 
-        //save accessToken and userID of user
+        //Save accessToken and userID of the user
         const userInfo = {};
         userInfo.accessToken = result.data.accessToken;
         userInfo.userID =  result.data._id;
@@ -69,9 +71,19 @@ export default function AuthProvider({children}) {
   useEffect(()=>{
     isLoggedIn();
   },[]);
+
   return (
-    <AuthContext.Provider value={{accessToken, handleLogin, handleLogout, setLoginMessage, loginMessage}}>
+    <AppContext.Provider 
+    value={{
+      accessToken, 
+      handleLogin,
+      handleLogout, 
+      setLoginMessage, 
+      loginMessage,
+      profileImage,
+      setProfileImage}}
+    >
       {children}
-    </AuthContext.Provider>
+    </AppContext.Provider>
   )
 }

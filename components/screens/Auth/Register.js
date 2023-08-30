@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigation } from '@react-navigation/native';
 import { StyleSheet, TextInput, View, Text,TouchableOpacity, Keyboard } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import { AuthContext } from '../contexts/AuthProvider';
+import { AppContext } from '../../contexts/AppProvider';
 
 export default function Register() {
     const URL = 'https://chat-api-with-auth.up.railway.app/auth/register';
@@ -10,7 +10,7 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [registerResult, setRegisterResult] = useState('');
     const navigation = useNavigation();
-    const {setLoginMessage} = useContext(AuthContext);
+    const {setLoginMessage} = useContext(AppContext);
 
     
     const handleRegisterUser = async() =>{
@@ -66,8 +66,10 @@ export default function Register() {
                 </TouchableOpacity>
             </View>
             <Link to={{ screen: 'Login' }} style={styles.goBackLink} onPress={()=> setLoginMessage('')}>
-                <Ionicons name="chevron-back" size={33} color="gray" />
-                Back to login
+                <View style={styles.goBackContainer}>
+                    <Ionicons name="chevron-back" size={33} color="gray" />
+                    <Text style={styles.goBackText}>Back to login</Text>
+                </View>
             </Link>
         </View>
     )
@@ -104,5 +106,15 @@ const styles = StyleSheet.create({
     goBackLink: {
         fontSize: 18,
         color:'gray'
-    }
+    },
+    goBackContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      goBackText: {
+        fontSize: 16,
+        color: 'gray',
+        marginLeft: 5, // Adjust the margin as needed
+      },
 })

@@ -1,22 +1,19 @@
 import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import StackNavigator from './navigators/StackNavigator';
 import { NavigationContainer } from '@react-navigation/native';
-import AuthProvider from './contexts/AuthProvider';
-import DrawerNavigator from './navigators/DrawerNavigator';
-
+import AppProvider from './components/contexts/AppProvider';
+import StackNavigator from './components/navigators/StackNavigator';
 
 export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-      <AuthProvider>
-        <StackNavigator />
-      </AuthProvider>
+        <AppProvider>
+          <StackNavigator/>
+        </AppProvider>
       </View>
     </NavigationContainer>
-    
+
   );
 }
 

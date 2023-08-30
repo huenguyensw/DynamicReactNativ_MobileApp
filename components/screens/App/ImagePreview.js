@@ -1,29 +1,35 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import * as MediaLibrary from 'expo-media-library';
 import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { AppContext } from '../../contexts/AppProvider';
 
 
 export default function ImagePreview({setPicture, picture, navigation}) {
+    const {setProfileImage} = useContext(AppContext);
 
     const savePicture = async () => {
         try {
             const asset = await MediaLibrary.createAssetAsync(picture.uri);
             const album = await MediaLibrary.getAlbumAsync('Expo');
 
+            console.log('asset', asset);
             if (album == null) {
                 await MediaLibrary.createAlbumAsync('Expo', asset);
             } else {
                 await MediaLibrary.addAssetsToAlbumAsync(asset, album.id, false);
             }
-            navigation.navigate("Profile")
+
+            setProfileImage(picture.uri);
+            navigation.navigate("Profile");
             setPicture(null);
         } catch (error) {
             console.log(error);
         }
 
     }
+
 
     return (
         <SafeAreaView style={styles.container}>

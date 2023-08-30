@@ -58,11 +58,6 @@ export default function CameraApp({navigation}) {
   const [picture, setPicture] = useState(null);
 
 
-  
-
-
-
-
   if (hasCameraPermission === null || hasMediaPermission === null) {
     return (
       <View>
@@ -81,30 +76,51 @@ export default function CameraApp({navigation}) {
 
   if (picture) {
     return (
-      <ImagePreview setPicture={setPicture} picture={picture} navigation={navigation}/>
+      <ImagePreview
+        setPicture={setPicture} 
+        picture={picture} 
+        navigation={navigation}
+      />
     )
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        <Camera style={styles.cameraContainer} type={type} ref={cameraRef} flashMode={flash} >
+        <Camera 
+          style={styles.cameraContainer} 
+          type={type} 
+          ref={cameraRef}
+          flashMode={flash}
+        >
           <View style={styles.ButtonsOnTop}>
             <TouchableOpacity
               style={styles.generalBtn}
               onPress={() => toggleCameraType()}>
-              <FontAwesome name="refresh" size={24} color="white" />
+              <FontAwesome 
+                name="refresh" 
+                size={24} 
+                color="white" 
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.generalBtn}
               onPress={() => toggleFlashMode()}>
-              <Entypo name='flash' size={24} color={flash === FlashMode.on ? 'white' : 'yellow'} />
+              <Entypo 
+                name='flash'
+                size={24} 
+                color={flash === FlashMode.on ? 'white' : 'yellow'} 
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.ButtonsUnderBottom}>
             <TouchableOpacity
               style={styles.cameraBtn}
               onPress={() => takePicture()}>
-              <Entypo name='camera' size={30} color='white' />
+              <Entypo 
+                name='camera' 
+                size={30} 
+                color='white' 
+              />
             </TouchableOpacity>
           </View>
         </Camera>

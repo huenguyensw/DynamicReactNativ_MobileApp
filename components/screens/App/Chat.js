@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import { AuthContext } from '../contexts/AuthProvider'
+import { AppContext } from '../../contexts/AppProvider';
 import { Feather } from '@expo/vector-icons';
 import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, FlatList } from 'react-native'
 import Message from './Message';
@@ -7,7 +7,7 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 
 export default function Chat() {
-    const { accessToken } = useContext(AuthContext);
+    const { accessToken } = useContext(AppContext);
     const [allMessages, setAllMessages] = useState(null);
     const fetchAllMessagesAPI = 'https://chat-api-with-auth.up.railway.app/messages';
     const headers = { "Authorization": "Bearer " + accessToken.accessToken };

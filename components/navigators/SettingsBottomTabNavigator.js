@@ -1,9 +1,9 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profile from '../screens/Profile';
 import { AntDesign, Feather } from '@expo/vector-icons';
-import CameraApp from '../screens/CameraApp';
+import Profile from '../screens/App/Profile';
+import CameraApp from '../screens/App/CameraApp';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,10 @@ export default function SettingsBottomTabNavigator() {
         options={{headerShown: false,
           tabBarIcon: ({color, size}) => {
             return (
-              <AntDesign name="profile" size={size} color={color} />
+              <AntDesign 
+                name="profile" 
+                size={size} 
+                color={color} />
             );
         },}} />
       <Tab.Screen 
@@ -26,7 +29,10 @@ export default function SettingsBottomTabNavigator() {
         options={{headerShown: false,
         tabBarIcon: ({color, size}) => {
           return (
-            <Feather name="camera" size={size} color={color} />
+            <Feather 
+              name="camera" 
+              size={size} 
+              color={color} />
           );
       },}}/>
     </Tab.Navigator>

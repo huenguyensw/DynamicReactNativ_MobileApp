@@ -1,11 +1,11 @@
 import React, { useContext,useEffect, useState } from 'react'
 import { Button, Keyboard, StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AuthContext } from '../contexts/AuthProvider';
+import { AppContext } from '../../contexts/AppProvider';
 
 
 export default function Login({navigation}) {
-    const {handleLogin, loginMessage} = useContext(AuthContext);
+    const {handleLogin, loginMessage, setLoginMessage} = useContext(AppContext);
     const [username, setUserName] = useState('')
     const [password, setPassword] = useState('')
     
@@ -43,6 +43,7 @@ export default function Login({navigation}) {
                     onPress={()=>{
                         setUserName('');
                         setPassword('');
+                        setLoginMessage('');
                         navigation.navigate("Register")}}
                 >
                     <Text>Register</Text>

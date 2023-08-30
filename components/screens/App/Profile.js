@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Image, TextInput, View, Text, StyleSheet, Keyboard } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AuthContext } from '../contexts/AuthProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AppContext } from '../../contexts/AppProvider';
+
 
 export default function Profile({navigation}) {
   const URL = 'https://chat-api-with-auth.up.railway.app/users'
-  const { accessToken, handleLogout } = useContext(AuthContext);
-  const [avatarImage, setAvatarImage] = useState('');
+  const { accessToken, handleLogout, profileImage } = useContext(AppContext);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [updateUser, setUpdateUser] = useState(false);
+ 
 
+  
   const fetchData = async () => {
     try {
       const response = await fetch(URL, {
@@ -84,12 +86,14 @@ export default function Profile({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
-      <MaterialCommunityIcons 
+      {profileImage
+      ? <Image source={{uri: profileImage}} style={styles.imageProfile}/>
+      : <MaterialCommunityIcons 
         style={styles.profileIcon} 
         name="face-man-profile" 
         size={130} 
         color="black" 
-      />
+      />}
       <View style={styles.childBox}>
         <TextInput
           style={styles.inputField}
@@ -171,6 +175,12 @@ const styles = StyleSheet.create({
   },
   childBox: {
     rowGap: 20,
+  },
+  imageProfile :{
+    width: 100, 
+    height: 100,
+    borderRadius: 50,
+    alignSelf: 'center',
   }
 
 })

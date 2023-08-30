@@ -9,8 +9,6 @@ export default function Message({message, userID, setEnableDeleteMessage,setItem
         setEnableDeleteMessage(true);
         setItemId(id);
     }
-
-    
    
   return (
     <View style={styles.container}>
