@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { AuthContext } from '../contexts/AuthProvider'
 import { Feather } from '@expo/vector-icons';
-import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, FlatList } from 'react-native'
+import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, FlatList } from 'react-native'
 import Message from './Message';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
@@ -87,8 +87,7 @@ export default function Chat() {
     }
 
     return (
-        <SafeAreaView style={styles.container} >
-            
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
             {allMessages
                 && <FlatList
                     style={styles.messageBox}
@@ -145,17 +144,18 @@ export default function Chat() {
                 // />
             )} */}
 
-
-        </SafeAreaView>
-    )
+        </KeyboardAvoidingView>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        paddingLeft: 10,
+        justifyContent: 'space-between',
+        paddingLeft: 15,
         paddingRight: 10,
+        marginBottom: 20,
     },
     content: {
         backgroundColor: 'red',
@@ -172,10 +172,10 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderColor: 'gray',
         width: '85%',
-        padding: 5,
+        padding: 10,
     },
     messageBox: {
-        marginBottom: 30,
+        // marginBottom: 30,
     },
     deleteBox: {
         flexDirection: 'row',

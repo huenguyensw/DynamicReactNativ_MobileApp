@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   inputField: {
-    padding: 5,
+    padding: 10,
     borderWidth: 2,
     borderRadius: 5,
     borderColor: 'gray',
