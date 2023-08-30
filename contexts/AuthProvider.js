@@ -6,12 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 export const AuthContext = createContext();
 
 export default function AuthProvider({children}) {
-
+  const [loginMessage, setLoginMessage] = useState('');
   const [accessToken, setAccessToken] = useState({});
   const APIGenToken = 'https://chat-api-with-auth.up.railway.app/auth/token';
   const navigation = useNavigation();
 
-  const handleLogin = async(username,password,setLoginMessage) =>{
+  const handleLogin = async(username,password,setUserName, setPassword) =>{
     try{
       const response =  await fetch(APIGenToken, {
         method: 'POST',
@@ -25,16 +25,18 @@ export default function AuthProvider({children}) {
       });
       const result = await response.json();
       if(result.status == '401'){
-        console.log("test Hello",result.message);
         setLoginMessage('Incorrect username or password');
       }else if(result.status == '200'){
+
         setLoginMessage('');
+        setUserName('');
+        setPassword('');
+
         //save accessToken and userID of user
         const userInfo = {};
         userInfo.accessToken = result.data.accessToken;
         userInfo.userID =  result.data._id;
         await AsyncStorage.setItem('MyApp_user',JSON.stringify(userInfo));
-        console.log('successfully',userInfo);
         setAccessToken(userInfo);
         navigation.navigate("Chat page");
         
@@ -52,7 +54,6 @@ export default function AuthProvider({children}) {
     } catch(error){
       console.log(error);
     }
-    console.log('logout ok')
 
   }
 
@@ -60,7 +61,6 @@ export default function AuthProvider({children}) {
     try{
       const token = await AsyncStorage.getItem('MyApp_user');
       setAccessToken(JSON.parse(token));
-      console.log('token',token)
     }catch(error){
       console.log(error);
     }
@@ -70,7 +70,7 @@ export default function AuthProvider({children}) {
     isLoggedIn();
   },[]);
   return (
-    <AuthContext.Provider value={{accessToken, handleLogin, handleLogout}}>
+    <AuthContext.Provider value={{accessToken, handleLogin, handleLogout, setLoginMessage, loginMessage}}>
       {children}
     </AuthContext.Provider>
   )

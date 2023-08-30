@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigation } from '@react-navigation/native';
 import { StyleSheet, TextInput, View, Text,TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import Login from './Login';
+import { AuthContext } from '../contexts/AuthProvider';
 
 export default function Register() {
     const URL = 'https://chat-api-with-auth.up.railway.app/auth/register';
@@ -10,6 +11,7 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [registerResult, setRegisterResult] = useState('');
     const navigation = useNavigation();
+    const {setLoginMessage} = useContext(AuthContext);
 
     
     const handleRegisterUser = async() =>{
@@ -26,12 +28,10 @@ export default function Register() {
             });
             const result = await response.json();
             setRegisterResult(result);
-            console.log('test',result.status)
+
             if(result.status == '200'){
-                console.log('hello');
-                navigation.navigate("Login", {
-                    message: 'You have successfully registered. Please login',
-                })              
+                setLoginMessage('You have successfully registered. Please login');
+                navigation.navigate("Login");              
             }
             
         }catch(error){

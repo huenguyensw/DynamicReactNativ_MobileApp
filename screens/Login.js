@@ -1,28 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext,useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
 import { AuthContext } from '../contexts/AuthProvider';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function Login({navigation}) {
-    const {handleLogin} = useContext(AuthContext);
+    const {handleLogin, loginMessage} = useContext(AuthContext);
     const [username, setUserName] = useState('')
     const [password, setPassword] = useState('')
-    const route = useRoute();
-    const message =route.params?.message;
-    const [loginMessage, setLoginMessage] = useState('');
-
-    useEffect(()=>{
-        setLoginMessage(message);
-        //clear username and password each time access the login screen
-        setUserName('');
-        setPassword('')
-    },[])
-    // console.log('loginMessage',loginMessage)
+    
+    
     return (
         <View style={styles.container}>
-            {/* two input fields for username and password */}
             <View style={styles.itemContainer}>
                 <TextInput 
                 style={styles.inputField} 
@@ -42,14 +33,17 @@ export default function Login({navigation}) {
             <View style={styles.itemContainer}>
                 <TouchableOpacity 
                     style={styles.touchBtn} 
-                    onPress={()=>handleLogin(username,password,setLoginMessage)} 
+                    onPress={()=>handleLogin(username,password, setUserName, setPassword)} 
                 >
                     <Text>Login</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
                     style={styles.touchBtn} 
-                    onPress={()=>navigation.navigate("Register")}
+                    onPress={()=>{
+                        setUserName('');
+                        setPassword('');
+                        navigation.navigate("Register")}}
                 >
                     <Text>Register</Text>
                 </TouchableOpacity>
