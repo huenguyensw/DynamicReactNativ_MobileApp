@@ -63,7 +63,6 @@ export default function Chat() {
     }
 
     const deleteContent = async(id) => {
-        console.log('id', id)
         try{
             const response = await fetch(fetchAllMessagesAPI + '/'+ `${id}`,{
                 method: 'DELETE',
@@ -87,10 +86,9 @@ export default function Chat() {
         setEnableDeleteMessage(false);
     }
 
-
-
     return (
         <SafeAreaView style={styles.container} >
+            
             {allMessages
                 && <FlatList
                     style={styles.messageBox}
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     messageBox: {
-        marginBottom: 20,
+        marginBottom: 30,
     },
     deleteBox: {
         flexDirection: 'row',

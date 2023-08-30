@@ -2,8 +2,8 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from '../screens/Profile';
-import Camera from '../screens/Camera';
 import { AntDesign, Feather } from '@expo/vector-icons';
+import CameraApp from '../screens/CameraApp';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +22,7 @@ export default function SettingsBottomTabNavigator() {
         },}} />
       <Tab.Screen 
         name="Camera" 
-        component={Camera} 
+        component={CameraApp} 
         options={{headerShown: false,
         tabBarIcon: ({color, size}) => {
           return (

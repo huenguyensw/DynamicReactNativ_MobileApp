@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigation } from '@react-navigation/native';
-import { StyleSheet, TextInput, View, Text,TouchableOpacity } from 'react-native'
+import { StyleSheet, TextInput, View, Text,TouchableOpacity, Keyboard } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import Login from './Login';
 import { AuthContext } from '../contexts/AuthProvider';
 
 export default function Register() {
@@ -38,7 +37,6 @@ export default function Register() {
             console.log(error);
         } 
     }
-    console.log(registerResult.status)
     return (
         <View style={styles.container}>
             <View style={styles.itemContainer}>
@@ -47,6 +45,7 @@ export default function Register() {
                 placeholder='Username' 
                 value={userName} 
                 onChangeText={(text)=>setUserName(text)} />
+
                 <TextInput 
                 style={styles.inputField} 
                 placeholder='Password' 
@@ -58,12 +57,15 @@ export default function Register() {
                 
             </View>
             <View>
-                 
-                <TouchableOpacity style={styles.touchBtn} onPress={()=>handleRegisterUser()}>
+                <TouchableOpacity 
+                style={styles.touchBtn} 
+                onPress={()=> {
+                    Keyboard.dismiss();
+                    handleRegisterUser()}}>
                     <Text>Register</Text>
                 </TouchableOpacity>
             </View>
-            <Link to={{ screen: 'Login' }} style={styles.goBackLink}>
+            <Link to={{ screen: 'Login' }} style={styles.goBackLink} onPress={()=> setLoginMessage('')}>
                 <Ionicons name="chevron-back" size={33} color="gray" />
                 Back to login
             </Link>

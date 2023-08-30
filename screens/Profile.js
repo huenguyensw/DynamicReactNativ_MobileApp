@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Image, TextInput, View, Text, StyleSheet } from 'react-native'
+import { Image, TextInput, View, Text, StyleSheet, Keyboard } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../contexts/AuthProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -107,14 +107,16 @@ export default function Profile({navigation}) {
       <View style={styles.childBox}>
         <TouchableOpacity
           style={styles.touchBtn}
-          onPress={() => handleUpdateUser()}
+          onPress={() => 
+            { Keyboard.dismiss();
+              handleUpdateUser()}}
         >
           <Text>Update</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.touchBtn}
-          onPress={()=>handleDeleteUser()}
+          onPress={()=> handleDeleteUser()}
         >
           <Text>Delete</Text>
         </TouchableOpacity>
@@ -128,10 +130,6 @@ export default function Profile({navigation}) {
           <Text>Logout</Text>
         </TouchableOpacity>
       </View>
-
-
-      {/* Profile includes Firstname, Lastname input fields
-        Buttons: Update, delete, logout */}
     </View>
   )
 }
@@ -141,7 +139,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     // justifyContent: 'center',
-    rowGap: 45,
+    rowGap: 40,
     marginLeft: '10%',
     marginRight: '10%',
   },
@@ -149,7 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: '400',
     textAlign: 'center',
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 0,
     marginBottom: 0,
   },
