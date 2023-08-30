@@ -110,28 +110,28 @@ export default function Profile({navigation}) {
       </View>
       <View style={styles.childBox}>
         <TouchableOpacity
-          style={styles.touchBtn}
+          style={styles.updateBtn}
           onPress={() => 
             { Keyboard.dismiss();
               handleUpdateUser()}}
         >
-          <Text>Update</Text>
+          <Text style={styles.buttonName}>Update</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.touchBtn}
+          style={styles.deleteBtn}
           onPress={()=> handleDeleteUser()}
         >
-          <Text>Delete</Text>
+          <Text style={styles.buttonName}>Delete</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
-          style={styles.touchBtn}
+          style={styles.logoutBtn}
           onPress={()=> {
             handleLogout();
            navigation.navigate("Login");
           }}>
-          <Text>Logout</Text>
+          <Text style={styles.buttonName}>Logout</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -161,14 +161,35 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'gray',
   },
-  touchBtn: {
+  logoutBtn: {
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 5,
     paddingRight: 5,
     borderWidth: 2,
     borderRadius: 5,
-    borderColor: 'gray',
+    borderColor: '#C0C0C0',
+    backgroundColor: '#C0C0C0',
+  },
+  updateBtn: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#87CEFA',
+    backgroundColor: '#87CEFA',
+  },
+  deleteBtn: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#FF4500',
+    backgroundColor: '#FF4500',
   },
   profileIcon: {
     alignSelf: 'center'
@@ -181,6 +202,9 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     alignSelf: 'center',
-  }
+  },
+  buttonName: {
+    fontSize: 15,
+}
 
 })

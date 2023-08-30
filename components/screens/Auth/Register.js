@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         borderWidth: 2,
         borderRadius: 5,
-        borderColor: 'gray',
+        borderColor: '#87CEFA',
+        backgroundColor: '#87CEFA',
     },
     itemContainer: {
         rowGap: 20,

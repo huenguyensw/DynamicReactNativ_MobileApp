@@ -30,23 +30,23 @@ export default function Login({navigation}) {
             </View>
             <View style={styles.itemContainer}>
                 <TouchableOpacity 
-                    style={styles.touchBtn} 
+                    style={styles.loginBtn} 
                     onPress={()=> {
                         Keyboard.dismiss();
                         handleLogin(username,password, setUserName, setPassword)}} 
                 >
-                    <Text>Login</Text>
+                    <Text style={styles.buttonName}>Login</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={styles.touchBtn} 
+                    style={styles.registerBtn} 
                     onPress={()=>{
                         setUserName('');
                         setPassword('');
                         setLoginMessage('');
                         navigation.navigate("Register")}}
                 >
-                    <Text>Register</Text>
+                    <Text style={styles.buttonName}>Register</Text>
                 </TouchableOpacity>
             </View>
 
@@ -69,17 +69,28 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: 'gray',
     },
-    touchBtn: {
+    loginBtn: {
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 5,
         paddingRight: 5,
         borderWidth: 2,
         borderRadius: 5,
-        borderColor: 'gray',
+        borderColor: '#87CEFA',
+        backgroundColor: '#87CEFA',
+    },
+    registerBtn: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 0,
     },
     itemContainer: {
         rowGap: 20,
+    },
+    buttonName: {
+        fontSize: 15,
     }
 
 })
