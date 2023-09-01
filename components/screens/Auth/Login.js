@@ -1,6 +1,6 @@
-import React, { useContext,useEffect, useState } from 'react'
-import { Button, Keyboard, StyleSheet, Text, TextInput, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useContext, useState } from 'react'
+import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native'
+import { TouchableOpacity } from 'react-native';
 import { AppContext } from '../../contexts/AppProvider';
 
 
@@ -21,6 +21,7 @@ export default function Login({navigation}) {
                 style={styles.inputField} 
                 placeholder='Password'
                 value={password}
+                secureTextEntry={true} 
                 onChangeText={(text)=>setPassword(text)} />
 
                 {loginMessage !='' 
@@ -76,8 +77,8 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         borderWidth: 2,
         borderRadius: 5,
-        borderColor: '#87CEFA',
-        backgroundColor: '#87CEFA',
+        borderColor: 'powderblue',
+        backgroundColor: 'powderblue',
     },
     registerBtn: {
         paddingTop: 10,

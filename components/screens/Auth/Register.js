@@ -50,6 +50,7 @@ export default function Register() {
                 style={styles.inputField} 
                 placeholder='Password' 
                 value={password} 
+                secureTextEntry={true}
                 onChangeText={(text)=>setPassword(text)} />
                 {registerResult !== null && (registerResult.status == '409'
                 ? <Text style={{color: 'red'}}>{registerResult.message}</Text>
@@ -98,8 +99,8 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         borderWidth: 2,
         borderRadius: 5,
-        borderColor: '#87CEFA',
-        backgroundColor: '#87CEFA',
+        borderColor: 'powderblue',
+        backgroundColor: 'powderblue',
     },
     itemContainer: {
         rowGap: 20,

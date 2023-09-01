@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Image, TextInput, View, Text, StyleSheet, Keyboard } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AppContext } from '../../contexts/AppProvider';
+import FadeInView from '../../Animation/Animation';
 
 
 export default function Profile({navigation}) {
   const URL = 'https://chat-api-with-auth.up.railway.app/users'
-  const { accessToken, handleLogout, profileImage } = useContext(AppContext);
+  const { accessRights, handleLogout, profileImage } = useContext(AppContext);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [updateUser, setUpdateUser] = useState(false);
+  const [updateResult, setUpdateResult] = useState();
+  const updateInterval = useRef(0); 
  
 
   
@@ -19,7 +21,7 @@ export default function Profile({navigation}) {
       const response = await fetch(URL, {
         method: 'GET',
         headers: {
-          "Authorization": "Bearer " + accessToken.accessToken,
+          "Authorization": "Bearer " + accessRights.accessToken,
         }
       })
       const result = await response.json();
@@ -38,7 +40,7 @@ export default function Profile({navigation}) {
 
   useEffect(() => {
     fetchData();
-  }, [updateUser])
+  }, [])
 
   const handleUpdateUser = async () => {
     try {
@@ -46,7 +48,7 @@ export default function Profile({navigation}) {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + accessToken.accessToken,
+          "Authorization": "Bearer " + accessRights.accessToken,
         },
         body: JSON.stringify({
           "firstname": firstName,
@@ -55,20 +57,28 @@ export default function Profile({navigation}) {
       })
       const result = await response.json();
       if (result.status == '200') {
-        setUpdateUser(!updateUser);
+        setUpdateResult('Updated successfully!');
+      } else {
+        setUpdateResult('Update failed!');
       }
+      clearInterval(updateInterval.current);
+      updateInterval.current = setTimeout(() => {
+          setUpdateResult(null);
+        }, 3000);
 
     } catch (error) {
       console.log(error);
     }
   }
 
+  
+
   const handleDeleteUser = async() =>{
     try{
       const response = await fetch(URL, {
         method:'DELETE',
         headers: {
-          "Authorization": "Bearer " + accessToken.accessToken,
+          "Authorization": "Bearer " + accessRights.accessToken,
         }
       })
 
@@ -94,6 +104,18 @@ export default function Profile({navigation}) {
         size={130} 
         color="black" 
       />}
+
+      <FadeInView>
+        <Text style={updateResult === 'Updated successfully!'? styles.successContent: styles.errorContent}>
+          {updateResult}
+        </Text>
+      </FadeInView>
+      
+      {/* {updateResult
+      ? (updateResult === 'Updated successfully!'
+        ? <FadeInView><Text style={styles.successContent}>{updateResult}</Text></FadeInView>
+        : <FadeInView><Text style={styles.errorContent}>{updateResult}</Text></FadeInView>)
+      : <FadeInView><Text style={styles.successContent}> </Text></FadeInView>} */}
       <View style={styles.childBox}>
         <TextInput
           style={styles.inputField}
@@ -178,8 +200,8 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     borderWidth: 2,
     borderRadius: 5,
-    borderColor: '#87CEFA',
-    backgroundColor: '#87CEFA',
+    borderColor: 'powderblue',
+    backgroundColor: 'powderblue',
   },
   deleteBtn: {
     paddingTop: 10,
@@ -205,6 +227,18 @@ const styles = StyleSheet.create({
   },
   buttonName: {
     fontSize: 15,
-}
+  },
+  successContent: {
+    position: 'absolute',
+    top: '30%',
+    left: '30%',
+    color: 'green',
+  },
+  errorContent: {
+    position: 'absolute',
+    top: '30%',
+    left: '30%',
+    color: 'red'
+  }
 
 })

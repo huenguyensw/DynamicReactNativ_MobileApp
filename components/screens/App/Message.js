@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     myContent: {
         alignItems: 'flex-end',
-        backgroundColor: '#1E90FF',
+        backgroundColor: 'powderblue',
         padding: 5,
         borderRadius: 4,
     },

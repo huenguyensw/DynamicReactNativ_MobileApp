@@ -7,7 +7,7 @@ export const AppContext = createContext();
 
 export default function AppProvider({children}) {
   const [loginMessage, setLoginMessage] = useState('');
-  const [accessToken, setAccessToken] = useState({});
+  const [accessRights, setAccessRights] = useState({});
   const APIGenToken = 'https://chat-api-with-auth.up.railway.app/auth/token';
   const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null);
@@ -39,7 +39,7 @@ export default function AppProvider({children}) {
         userInfo.accessToken = result.data.accessToken;
         userInfo.userID =  result.data._id;
         await AsyncStorage.setItem('MyApp_user',JSON.stringify(userInfo));
-        setAccessToken(userInfo);
+        setAccessRights(userInfo);
         navigation.navigate("Chat page");
         
       }
@@ -52,7 +52,7 @@ export default function AppProvider({children}) {
   const handleLogout = async() =>{
     try {
       await AsyncStorage.removeItem('MyApp_user');
-      setAccessToken({});
+      setAccessRights({});
     } catch(error){
       console.log(error);
     }
@@ -62,7 +62,7 @@ export default function AppProvider({children}) {
   const isLoggedIn = async() => {
     try{
       const token = await AsyncStorage.getItem('MyApp_user');
-      setAccessToken(JSON.parse(token));
+      setAccessRights(JSON.parse(token));
     }catch(error){
       console.log(error);
     }
@@ -75,7 +75,7 @@ export default function AppProvider({children}) {
   return (
     <AppContext.Provider 
     value={{
-      accessToken, 
+      accessRights, 
       handleLogin,
       handleLogout, 
       setLoginMessage, 

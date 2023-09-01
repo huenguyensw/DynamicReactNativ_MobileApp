@@ -9,8 +9,11 @@ const Stack = createStackNavigator();
 
 export default function StackNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
+    <Stack.Navigator screenOptions={{headerTitleStyle: {
+      fontSize: 22,
+    }}}>
+      <Stack.Screen name="Login" component={Login}
+       />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Chat page" component={DrawerNavigator} options={{headerShown: false}} />
     </Stack.Navigator>

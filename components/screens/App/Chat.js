@@ -7,10 +7,9 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 
 export default function Chat() {
-    const { accessToken } = useContext(AppContext);
+    const { accessRights } = useContext(AppContext);
     const [allMessages, setAllMessages] = useState(null);
     const fetchAllMessagesAPI = 'https://chat-api-with-auth.up.railway.app/messages';
-    const headers = { "Authorization": "Bearer " + accessToken.accessToken };
     const [newMessage, setNewMessage] = useState('');
     const [addingState, setAddingState] = useState(false);
     const [enableDeleteMessage, setEnableDeleteMessage] = useState(false);
@@ -19,7 +18,7 @@ export default function Chat() {
 
 
     const getData = () => {
-        fetch(fetchAllMessagesAPI, { headers })
+        fetch(fetchAllMessagesAPI, { headers: { "Authorization": "Bearer " + accessRights.accessToken } })
             .then((response) => {
                 if (response.ok == false) {
                     throw new Error('HTTP Error' + response.status)
@@ -45,7 +44,7 @@ export default function Chat() {
                 method: 'POST',
                 headers: {
                     "Content-Type": 'application/json',
-                    "Authorization": "Bearer " + accessToken.accessToken,
+                    "Authorization": "Bearer " + accessRights.accessToken,
                 },
                 body: JSON.stringify({
                     content: newMessage,
@@ -67,7 +66,7 @@ export default function Chat() {
             const response = await fetch(fetchAllMessagesAPI + '/'+ `${id}`,{
                 method: 'DELETE',
                 headers: {
-                    "Authorization": "Bearer " + accessToken.accessToken,
+                    "Authorization": "Bearer " + accessRights.accessToken,
                 }
             })
             const result = await response.json();
@@ -97,7 +96,7 @@ export default function Chat() {
                     (< Message
                         item={item}
                         message={item}
-                        userID={accessToken.userID}
+                        userID={accessRights.userID}
                         setEnableDeleteMessage={setEnableDeleteMessage}
                         setItemId = {setItemId}
                     />
@@ -140,7 +139,7 @@ export default function Chat() {
                 // <Message
                 //     key={message._id}
                 //     message={message}
-                //     userID={accessToken.userID}
+                //     userID={accessRights.userID}
                 // />
             )} */}
 

@@ -4,10 +4,13 @@ import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { AppContext } from '../../contexts/AppProvider';
+import * as FileSystem from 'expo-file-system';
 
 
-export default function ImagePreview({setPicture, picture, navigation}) {
-    const {setProfileImage} = useContext(AppContext);
+
+export default function ImagePreview({ setPicture, picture, navigation }) {
+    const { setProfileImage, accessRights } = useContext(AppContext);
+    const API_ROOT_URL = 'https://chat-api-with-auth.up.railway.app/';
 
     const savePicture = async () => {
         try {
@@ -20,7 +23,18 @@ export default function ImagePreview({setPicture, picture, navigation}) {
             } else {
                 await MediaLibrary.addAssetsToAlbumAsync(asset, album.id, false);
             }
+            //save image to API
+            const uploadResult = await FileSystem.uploadAsync(API_ROOT_URL + 'users/' + accessRights.userID, picture.uri, {
+                httpMethod: 'PATCH',
+                uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+                fieldName: 'ProfileImage',
+                headers: {
+                    "Authorization": "Bearer " + accessRights.accessToken,
+                },
+            });
 
+            console.log(API_ROOT_URL + 'users/' + accessRights.userID)
+            console.log('uploadResult',uploadResult);
             setProfileImage(picture.uri);
             navigation.navigate("Profile");
             setPicture(null);
