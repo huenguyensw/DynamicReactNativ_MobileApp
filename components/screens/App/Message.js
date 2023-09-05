@@ -15,12 +15,16 @@ export default function Message({message, userID, setEnableDeleteMessage,setItem
         {message.user
         && (message.user._id == userID
             ? <TouchableOpacity style={styles.myContent} onPress={()=>showDeletion(message._id)}>
-                <Text>{message.content}</Text>
-                <Text>{message.date}</Text>
+                <View style={styles.textContainerright}>
+                    <Text>{message.content}</Text>
+                    <Text>{message.date}</Text>
+                </View>
               </TouchableOpacity>
             : <View style={styles.otherMessage}>
-                <Text style={styles.content}>{message.content}</Text>
-                <Text style={styles.date}>{message.date}</Text>
+                <View style={styles.textContainerleft}>
+                    <Text style={styles.content}>{message.content}</Text>
+                    <Text style={styles.date}>{message.date}</Text>
+                </View>
               </View>
         )}
         
@@ -38,13 +42,11 @@ const styles = StyleSheet.create({
     },
     myContent: {
         alignItems: 'flex-end',
-        backgroundColor: 'powderblue',
         padding: 5,
         borderRadius: 4,
     },
     otherMessage: {
         alignItems: 'flex-start',
-        backgroundColor: '#A9A9A9',
         padding: 5,
         borderRadius: 4,
 
@@ -53,9 +55,19 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     date: {
-        color: '#696969'
+        color: '#696969',
     },
-    
-    
+    textContainerright: {
+        backgroundColor: 'powderblue',
+        paddingRight: 5,
+        borderRadius: 4,
+        alignItems: 'flex-end',
+    },
+    textContainerleft: {
+        backgroundColor: '#A9A9A9',
+        padding: 5,
+        borderRadius: 4,
+        alignItems: 'flex-start',
+    },
 
 })
