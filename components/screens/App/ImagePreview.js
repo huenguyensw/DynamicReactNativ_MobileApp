@@ -35,12 +35,11 @@ export default function ImagePreview({ setPicture, picture, navigation }) {
 
             
             console.log('uploadResult',uploadResult);
-            console.log(picture.uri)
             setProfileImage(picture.uri);
             navigation.navigate("Profile");
             setPicture(null);
         } catch (error) {
-            console.error('Error during upload:', error);
+            console.error('Error during uploading:', error);
         }
 
     }
