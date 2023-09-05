@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
+import { Text } from 'react-native';
 import { AppContext } from '../../contexts/AppProvider';
 import { Feather } from '@expo/vector-icons';
 import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, FlatList } from 'react-native'
@@ -14,6 +15,10 @@ export default function Chat() {
     const [addingState, setAddingState] = useState(false);
     const [enableDeleteMessage, setEnableDeleteMessage] = useState(false);
     const [itemId, setItemId] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(null);
+
+
 
 
     const getData = () => {
@@ -27,9 +32,13 @@ export default function Chat() {
             })
             .then((resText) => {
                 setAllMessages(JSON.parse(resText).data.reverse());
+                setIsLoading(false);
+                setIsError(null);
             })
             .catch((error) => {
-                console.log(error);
+                setIsError(error.message);
+                setIsLoading(false);
+
             })
     }
 
@@ -91,25 +100,30 @@ export default function Chat() {
     const CancelDeletion = () => {
         setEnableDeleteMessage(false);
     }
-
+    
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-            {allMessages
-                && <FlatList
-                    style={styles.messageBox}
-                    data={allMessages}
-                    inverted
-                    renderItem={({ item }) =>
-                    (< Message
-                        item={item}
-                        message={item}
-                        userID={accessRights.userID}
-                        setEnableDeleteMessage={setEnableDeleteMessage}
-                        setItemId={setItemId}
-                    />
-                    )}
-                    keyExtractor={item => item._id}
-                />}
+            {isLoading
+                ? <Text style={styles.notifyMsg}>Loading...</Text>
+                : isError
+                    ? <Text style={styles.notifyMsg}>{isError}</Text>
+                    : allMessages
+                    && <FlatList
+                        style={styles.messageBox}
+                        data={allMessages}
+                        inverted
+                        renderItem={({ item }) =>
+                        (< Message
+                            item={item}
+                            message={item}
+                            userID={accessRights.userID}
+                            setEnableDeleteMessage={setEnableDeleteMessage}
+                            setItemId={setItemId}
+                        />
+                        )}
+                        keyExtractor={item => item._id}
+                    />}
+
             {enableDeleteMessage
                 ? <View style={styles.deleteBox}>
                     <MaterialIcons
@@ -142,16 +156,18 @@ export default function Chat() {
             }
             {/* the second solution */}
             {/* {allMessages && allMessages.map((message) =>
-
-                // <Message
-                //     key={message._id}
-                //     message={message}
-                //     userID={accessRights.userID}
-                // />
-            )} */}
+    
+                    // <Message
+                    //     key={message._id}
+                    //     message={message}
+                    //     userID={accessRights.userID}
+                    // />
+                )} */}
 
         </KeyboardAvoidingView>
     );
+
+
 }
 
 const styles = StyleSheet.create({
@@ -193,6 +209,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: 'red'
 
+    },
+    notifyMsg: {
+        textAlign: 'center',
+        fontSize: 20,
     }
 
 })

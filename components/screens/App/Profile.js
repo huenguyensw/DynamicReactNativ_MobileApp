@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: '400',
     textAlign: 'center',
-    paddingTop: 10,
+    paddingTop: 8,
     paddingBottom: 0,
     marginBottom: 0,
   },
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   childBox: {
-    rowGap: 20,
+    rowGap: 18,
   },
   imageProfile :{
     width: 100, 
