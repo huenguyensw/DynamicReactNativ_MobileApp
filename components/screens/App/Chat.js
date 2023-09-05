@@ -16,7 +16,6 @@ export default function Chat() {
     const [itemId, setItemId] = useState(null);
 
 
-
     const getData = () => {
         fetch(fetchAllMessagesAPI, { headers: { "Authorization": "Bearer " + accessRights.accessToken } })
             .then((response) => {
@@ -33,8 +32,16 @@ export default function Chat() {
                 console.log(error);
             })
     }
+
+
     useEffect(() => {
         getData();
+        const intervalId = setInterval(getData, 5000);
+
+        // Clean up the interval when the component unmounts or 'addingState' changes
+        return () => {
+            clearInterval(intervalId);
+        };
     }, [addingState]);
 
 
@@ -61,24 +68,24 @@ export default function Chat() {
         }
     }
 
-    const deleteContent = async(id) => {
-        try{
-            const response = await fetch(fetchAllMessagesAPI + '/'+ `${id}`,{
+    const deleteContent = async (id) => {
+        try {
+            const response = await fetch(fetchAllMessagesAPI + '/' + `${id}`, {
                 method: 'DELETE',
                 headers: {
                     "Authorization": "Bearer " + accessRights.accessToken,
                 }
             })
             const result = await response.json();
-            if(result.status == '200'){
+            if (result.status == '200') {
                 setAllMessages(allMessages.filter((item) => item._id != id))
             }
             setEnableDeleteMessage(false);
 
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
-        
+
     }
 
     const CancelDeletion = () => {
@@ -98,13 +105,13 @@ export default function Chat() {
                         message={item}
                         userID={accessRights.userID}
                         setEnableDeleteMessage={setEnableDeleteMessage}
-                        setItemId = {setItemId}
+                        setItemId={setItemId}
                     />
                     )}
                     keyExtractor={item => item._id}
                 />}
             {enableDeleteMessage
-            ? <View style={styles.deleteBox}>
+                ? <View style={styles.deleteBox}>
                     <MaterialIcons
                         name="delete"
                         size={24}
@@ -115,8 +122,8 @@ export default function Chat() {
                         size={24}
                         color="#F5F5DC"
                         onPress={() => CancelDeletion()} />
-            </View>
-            : <View style={styles.newMessageBox}>
+                </View>
+                : <View style={styles.newMessageBox}>
                     <TextInput
                         style={styles.inputField}
                         placeholder='Message...'
@@ -131,7 +138,7 @@ export default function Chat() {
                     >
                         <Feather name="send" size={24} color="black" />
                     </TouchableOpacity>
-            </View>
+                </View>
             }
             {/* the second solution */}
             {/* {allMessages && allMessages.map((message) =>
