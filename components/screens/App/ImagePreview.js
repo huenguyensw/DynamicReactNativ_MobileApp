@@ -24,7 +24,7 @@ export default function ImagePreview({ setPicture, picture, navigation }) {
                 await MediaLibrary.addAssetsToAlbumAsync(asset, album.id, false);
             }
             //save image to API
-            const uploadResult = await FileSystem.uploadAsync(API_ROOT_URL + 'users/' + accessRights.userID, picture.uri, {
+            const uploadResult = await FileSystem.uploadAsync(`https://chat-api-with-auth.up.railway.app/users/`, picture.uri, {
                 httpMethod: 'PATCH',
                 uploadType: FileSystem.FileSystemUploadType.MULTIPART,
                 fieldName: 'ProfileImage',
@@ -33,13 +33,14 @@ export default function ImagePreview({ setPicture, picture, navigation }) {
                 },
             });
 
-            console.log(API_ROOT_URL + 'users/' + accessRights.userID)
+            
             console.log('uploadResult',uploadResult);
+            console.log(picture.uri)
             setProfileImage(picture.uri);
             navigation.navigate("Profile");
             setPicture(null);
         } catch (error) {
-            console.log(error);
+            console.error('Error during upload:', error);
         }
 
     }
