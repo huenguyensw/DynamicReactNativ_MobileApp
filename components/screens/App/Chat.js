@@ -2,9 +2,10 @@ import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Text } from 'react-native';
 import { AppContext } from '../../contexts/AppProvider';
 import { Feather } from '@expo/vector-icons';
-import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, FlatList } from 'react-native'
+import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import Message from './Message';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { KeyboardAvoidingView } from 'react-native';
 
 
 export default function Chat() {
@@ -102,7 +103,9 @@ export default function Chat() {
     }
     
     return (
-        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
             {isLoading
                 ? <Text style={styles.notifyMsg}>Loading...</Text>
                 : isError
@@ -163,7 +166,6 @@ export default function Chat() {
                     //     userID={accessRights.userID}
                     // />
                 )} */}
-
         </KeyboardAvoidingView>
     );
 
