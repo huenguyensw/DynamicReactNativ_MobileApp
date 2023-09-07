@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Text } from 'react-native';
 import { AppContext } from '../../contexts/AppProvider';
-import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { View, Keyboard, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import Message from './Message';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -18,8 +18,19 @@ export default function Chat() {
     const [itemId, setItemId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(null);
+    const [sendIconColor, setSendIconColor] = useState('gray');
+    const [marginBottom, setMarginBottom] = useState(0);
 
 
+    
+
+    const handlePressIn = () =>{
+        setIsPressed(true);
+    }
+
+    const handlePressOut = () =>{
+        setIsPressed(false);
+    }
 
 
     const getData = () => {
@@ -101,6 +112,8 @@ export default function Chat() {
     const CancelDeletion = () => {
         setEnableDeleteMessage(false);
     }
+
+    
     
     return (
         <KeyboardAvoidingView
@@ -125,8 +138,8 @@ export default function Chat() {
                         />
                         )}
                         keyExtractor={item => item._id}
-                    />}
-
+            />}
+            <View style={{marginBottom:marginBottom}}>
             {enableDeleteMessage
                 ? <View style={styles.deleteBox}>
                     <MaterialIcons
@@ -145,18 +158,28 @@ export default function Chat() {
                         style={styles.inputField}
                         placeholder='Message...'
                         value={newMessage}
-                        onChangeText={(text) => setNewMessage(text)}
+                        onChangeText={(text) => {
+                            setSendIconColor('#6495ED');
+                            setNewMessage(text);
+                        }}
+                        onFocus={()=>{
+                            setMarginBottom(100)}
+                        }
+                        onBlur={()=> setMarginBottom(0)}
                     />
                     <TouchableOpacity
                         onPress={() => {
                             handleSendMessage();
+                            setNewMessage('');
+                            setSendIconColor('gray');
                             Keyboard.dismiss();
                         }}
                     >
-                        <Feather name="send" size={24} color="black" />
+                        <FontAwesome name="send" size={24} color={sendIconColor} />
                     </TouchableOpacity>
                 </View>
             }
+            </View>
             {/* the second solution */}
             {/* {allMessages && allMessages.map((message) =>
     
