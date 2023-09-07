@@ -5,11 +5,13 @@ import * as MediaLibrary from 'expo-media-library';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import ImagePreview from './ImagePreview';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function CameraApp({navigation}) {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaPermission, setHasMediaPermission] = useState(null);
+  const isFocused = useIsFocused();
 
   const getPermission = async () => {
     const CameraPermissions = await Camera.requestCameraPermissionsAsync();
@@ -85,7 +87,8 @@ export default function CameraApp({navigation}) {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        <Camera 
+        {isFocused 
+        && <Camera 
           style={styles.cameraContainer} 
           type={type} 
           ref={cameraRef}
@@ -124,6 +127,7 @@ export default function CameraApp({navigation}) {
             </TouchableOpacity>
           </View>
         </Camera>
+        }
       </SafeAreaView>
     )
   }
